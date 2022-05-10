@@ -15,8 +15,14 @@ for i in range(n):
     point.append(int(sys.stdin.readline().rstrip()))
 
 dp[0] = point[0]
-dp[1] = point[0] + point[1]
-dp[2] = max(point[0] + point[2], point[1] + point[2])
+if n > 1:
+    dp[1] = point[0] + point[1]
+if n > 2:
+    dp[2] = max(point[0] + point[2], point[1] + point[2])
+    
 for i in range(3,n):
     dp[i] = max(dp[i-2] + point[i], dp[i-3] + point[i-1] + point[i])
-print(dp[n-1])
+if n == 0:
+    print(dp[0])
+else:
+    print(dp[n-1])
