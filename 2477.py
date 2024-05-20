@@ -4,32 +4,31 @@ import sys
 
 k = int(sys.stdin.readline().rstrip())
 
-fieldList = []
+field_axis_list = []
+x, y = 0, 0
 
 for _ in range(6):
-    _, l = map(int, sys.stdin.readline().rstrip().split())
-    fieldList.append(l)
-x = max(fieldList[0], fieldList[2], fieldList[4])
-y = max(fieldList[1], fieldList[3], fieldList[5])
-temp = fieldList.copy()
-temp2 = fieldList.copy()
-xIndex = fieldList.index(x)
-temp[xIndex] = 0
-yIndex = temp.index(y)
+    axis, length = map(int, sys.stdin.readline().rstrip().split())
+    
+    # axis 1:east, 2:west, 3:south, 4:north
+    if axis == 1:
+        x += length
+        y += 0
+    elif axis == 2:
+        x -= length
+        y += 0
+    elif axis == 3:
+        x += 0
+        y -= length
+    elif axis == 4:
+        x += 0
+        y += length
+    field_axis_list.append((x, y))
+    
+# calculate area
+area = 0
+for i in range(6):
+    area += field_axis_list[i][0] * field_axis_list[(i+1)%6][1] - field_axis_list[i][1] * field_axis_list[(i+1)%6][0]
+area = abs(area) / 2
 
-index = [xIndex, yIndex]
-n = []
-maxIndex = max(index)
-for i in temp2:
-    fieldList.append(i)
-count = 0
-for i in fieldList[maxIndex+1:-1]:
-    if count == 1 or count == 2:
-        n.append(i)
-    count += 1
-    if count > 3:
-        break
-nx = n[0]
-ny = n[1]
-area = x*y - nx*ny
-print(k*area)
+print(int(area * k))
